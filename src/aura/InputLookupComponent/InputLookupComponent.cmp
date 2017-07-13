@@ -1,0 +1,65 @@
+<!--
+    MIT License
+
+    Copyright (c) 2017 George Doenlen
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+-->
+<aura:component description="Simple component to search a lookup" controller="InputLookupComponentController"
+                access="public"
+>
+    <!--attributes-->
+    <aura:attribute name="selectedRecord" type="SObject" access="public"
+                    description="This should be passed in by reference from whatever component the lookup sits in"
+    />
+    <aura:attribute name="results" type="SObject[]" description="Search results" access="private"/>
+    <aura:attribute name="searchVal" type="String" access="private"/>
+    <aura:attribute name="objectTypes" type="String[]" required="true" access="public"
+                    description="API names of the objects to search"
+    />
+    <aura:attribute name="label" type="String" required="true" access="public" description="label for search field"/>
+    <aura:attribute name="placeholder" type="String" access="public" default="{!$Label.c.Search}"
+                    description="placeholder value for the input field"
+    />
+
+    <!--body-->
+    <!--todo try to convert markup to: https://www.lightningdesignsystem.com/components/lookups/ -->
+    <aura:if isTrue="{!v.selectedRecord != null}">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">{!v.label}</label>
+            <div class="slds-pill_container">
+                <lightning:pill label="{!v.selectedRecord.Name}" onremove="{!c.clear}"/>
+            </div>
+        </div>
+        <aura:set attribute="else">
+            <lightning:input type="search" name="search" label="{!v.label}"
+                             onchange="{!c.search}" placeholder="{!v.placeholder}"
+            />
+        </aura:set>
+    </aura:if>
+    <aura:if isTrue="{!and(v.selectedRecord == null, v.results.length != 0)}">
+        <div class="{!v.results.length == 0 ? '' : 'slds-box'}">
+            <ul class="slds-has-block-links_space">
+                <aura:iteration items="{!v.results}" var="result" indexVar="i">
+                    <li><a onclick="{!c.select}" data-index="{!i}">{!result.Name}</a></li>
+                </aura:iteration>
+            </ul>
+        </div>
+    </aura:if>
+</aura:component>
