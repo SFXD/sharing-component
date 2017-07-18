@@ -11,5 +11,3 @@ Clone the project and install the components and apex classes into your org.
 Create a lightning quick action on the object you want to share and give it a height of 500px. Place it on the appropriate page layouts under Salesforce1 and Lightning Experience actions.
 
 The component will now be ready to use.
-
-
