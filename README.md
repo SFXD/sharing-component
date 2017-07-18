@@ -4,7 +4,7 @@ This is a fork of @mshanemc 's original lightning sharing component. This is a H
 
 Lightning Components  Apex to implement adhoc sharing in Lightning Experience		  Lightning Components + Apex to implement adhoc sharing in Lightning Experience
 
-###Use
+### Use
 
 Clone the project and install the components and apex classes into your org.
 
