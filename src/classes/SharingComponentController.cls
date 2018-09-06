@@ -2,7 +2,6 @@
     MIT License
 
     Copyright (c) 2017 Shane McLaughlin
-    Copyright (c) 2017 George Doenlen
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -120,13 +119,17 @@ public with sharing class SharingComponentController {
             Schema.SObjectType newObj = Schema.getGlobalDescribe().get(getSharingTableName(sobj));
             SObject share = newObj.newSObject();
 
-            share.put(accessLevelField, level);
-            share.put(getLookupField(sobj), recordId);
-            share.put('UserOrGroupId', userOrGroupId);
-
-            if (sobj == 'Account') {
-                share.put('CaseAccessLevel', level);
-                share.put('OpportunityAccessLevel', level);
+            try {
+                if (sobj == 'Account') {
+                    share.put('CaseAccessLevel', level);
+                    share.put('OpportunityAccessLevel', level);
+                } else {
+                    share.put(accessLevelField, level);
+                    share.put(getLookupField(sobj), recordId);
+                    share.put('UserOrGroupId', userOrGroupId);
+                }
+            } catch (SObjectException ex) {
+                throw new AuraHandledException(ex.getMessage());
             }
 
             insert share;

@@ -2,7 +2,6 @@
     MIT License
 
     Copyright (c) 2017 Shane McLaughlin
-    Copyright (c) 2017 George Doenlen
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +25,18 @@
 	reload: function(component) {
 		const helper = this;
 
-		const action = component.get("c.getCurrentShares");
+		const action = component.get('c.getCurrentShares');
 		action.setParams({
-			recordId: component.get("v.recordId")
+			recordId: component.get('v.recordId')
 		});
 		action.setCallback(this, function(response) {
 			const state = response.getState();
-			if (state === "SUCCESS") {
+			if (state === 'SUCCESS') {
 			    const shares = JSON.parse(response.getReturnValue());
-				component.set("v.shares", shares);
-			}  else if (state === "ERROR") {
-
+				component.set('v.shares', shares);
+			}  else if (state === 'ERROR' && component.isValid()) {
+				let err = response.getError();
+                component.set('v.message', err[0].message);
 			}
 		});
 		$A.enqueueAction(action);
@@ -50,25 +50,27 @@
      */
 	upsertShare: function(component, btn, userOrGroupId, level) {
 		const helper = this;
-		const action = component.get("c.upsertShare");
+		const action = component.get('c.upsertShare');
 
 		action.setParams({
 			userOrGroupId: userOrGroupId,
-			recordId: component.get("v.recordId"),
+			recordId: component.get('v.recordId'),
 			level: level
 		});
 
 		action.setCallback(this, function(response){
 			const state = response.getState();
-			const btnSuccess = "slds-button_success";
-			if (state === "SUCCESS") {
+			const btnSuccess = 'slds-button_success';
+			if (state === 'SUCCESS') {
 				helper.reload(component);
 				$A.util.addClass(btn, btnSuccess);
 				setTimeout($A.getCallback(function() {
 				    $A.util.removeClass(btn, btnSuccess);
                 }), 2000);
-			} else if (state === "ERROR") {
-                $A.util.addClass(btn, "slds-button_destructive");
+			} else if (state === 'ERROR' && component.isValid()) {
+				$A.util.addClass(btn, 'slds-button_destructive');
+				let err = response.getError();
+                component.set('v.message', err[0].message);
 			}
 		});
 		$A.enqueueAction(action);

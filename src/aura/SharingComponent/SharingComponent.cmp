@@ -2,7 +2,6 @@
     MIT License
 
     Copyright (c) 2017 Shane McLaughlin
-    Copyright (c) 2017 George Doenlen
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +32,7 @@
     <aura:attribute name="shares" type="Object[]" access="private"/>
     <aura:attribute name="selectedRecord" type="SObject" access="private"/>
     <aura:attribute name="level" type="String" access="private"/>
+    <aura:attribute name="message" type="String" access="private"/>
 
     <!--handlers-->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -52,6 +52,9 @@
                     <option value="edit">{!$Label.c.Edit}</option>
                 </lightning:select>
                 <div class="slds-form-element">
+                    <ui:message severity="error" title="{!$Label.c.Error}" class="{!v.message == null ? 'slds-hidden' : ''}">
+                        {!v.message}
+                    </ui:message>
                     <lightning:button label="{!$Label.c.Save}" onclick="{!c.save}" variant="brand"/>
                 </div>
             </div>

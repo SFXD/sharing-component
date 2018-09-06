@@ -1,7 +1,7 @@
 /*
     MIT License
 
-    Copyright (c) 2017 George Doenlen
+    Copyright (c) 2017 Shane McLaughlin
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -35,10 +35,6 @@
         	const state = response.getState();
         	if (state === "SUCCESS") {
         		component.getEvent("reload").fire();
-        		component.getEvent("toast").setParams({
-        		    message: "Change Sucessful!",
-        		    type: "success"
-                }).fire();
         	} else if (state === "ERROR") {
 
         	}
