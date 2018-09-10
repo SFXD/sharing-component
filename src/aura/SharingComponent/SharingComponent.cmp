@@ -55,7 +55,9 @@
                     <ui:message severity="error" title="{!$Label.c.Error}" class="{!v.message == null ? 'slds-hidden' : ''}">
                         {!v.message}
                     </ui:message>
-                    <lightning:button label="{!$Label.c.Save}" onclick="{!c.save}" variant="brand"/>
+                    <lightning:button label="{!$Label.c.Save}" onclick="{!c.save}" variant="brand"
+                                      disabled="{!v.selectedRecord == null}"  
+                    />
                 </div>
             </div>
         </div>

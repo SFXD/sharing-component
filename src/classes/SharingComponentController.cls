@@ -96,6 +96,10 @@ public with sharing class SharingComponentController {
      */
     @AuraEnabled
     public static void upsertShare(final Id userOrGroupId, final Id recordId, String level){
+        System.assert(userOrGroupId != null);
+        System.assert(recordId != null);
+        System.assert(String.isNotBlank(level));
+
 
         Schema.DescribeSObjectResult describe = getSharingDescribe(recordId);
         level = String.escapeSingleQuotes(level);
@@ -123,11 +127,10 @@ public with sharing class SharingComponentController {
                 if (sobj == 'Account') {
                     share.put('CaseAccessLevel', level);
                     share.put('OpportunityAccessLevel', level);
-                } else {
-                    share.put(accessLevelField, level);
-                    share.put(getLookupField(sobj), recordId);
-                    share.put('UserOrGroupId', userOrGroupId);
                 }
+                share.put(accessLevelField, level);
+                share.put(getLookupField(sobj), recordId);
+                share.put('UserOrGroupId', userOrGroupId);
             } catch (SObjectException ex) {
                 throw new AuraHandledException(ex.getMessage());
             }
